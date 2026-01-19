@@ -1,0 +1,230 @@
+\documentclass[11pt, a4paper]{article}
+
+% ========================================
+% PACKAGES DE BASE
+% ========================================
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage{lmodern}
+\usepackage{geometry}
+\geometry{a4paper, margin=2.5cm}
+
+% ========================================
+% PACKAGES POUR LA MISE EN PAGE
+% ========================================
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{listings} % Pour l'insertion de code
+\usepackage{xcolor}   % Pour la coloration du code
+
+% hyperref doit être chargé en dernier
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+}
+
+% ========================================
+% CONFIGURATION LISTINGS (CODE)
+% ========================================
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2,
+    language=Java
+}
+\lstset{style=mystyle}
+
+% ========================================
+% CONFIGURATION EN-T\^ETE ET PIED DE PAGE
+% ========================================
+\pagestyle{fancy}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0.4pt}
+\fancyhf{}
+\fancyfoot[L]{BOUANANI Abderrahman}
+\fancyfoot[R]{\textbf{Page \thepage/\pageref{LastPage}}}
+
+\parindent=0cm
+
+% ========================================
+% INFORMATIONS DU DOCUMENT
+% ========================================
+\newcommand{\monTitre}{TP 3: D\'eveloppement pilot\'e par les tests (TDD)}
+\newcommand{\monSousTitre}{Calculatrice Avanc\'ee en Java}
+\newcommand{\maFiliere}{D\'eveloppement Logiciel et Applicatif (DLA) - 2\`eme Ann\'ee}
+\newcommand{\monAnnee}{2024-2025}
+\newcommand{\monEtudiantUn}{BOUANANI Abderrahman}
+\newcommand{\monProfesseur}{Prof. Aimad QAZDAR}
+
+% ========================================
+% D\'EBUT DU DOCUMENT
+% ========================================
+\begin{document}
+
+% ========================================
+% PAGE DE GARDE
+% ========================================
+\begin{titlepage}
+    \centering
+    \vspace*{1cm}
+    
+    \includegraphics[width=0.4\textwidth]{figures/ENSAA.png}
+    \hfill
+    \includegraphics[width=0.4\textwidth]{figures/UIZ.png}
+    
+    \vspace{2cm}
+    
+    {\scshape\LARGE \'Ecole Nationale des Sciences Appliqu\'ees d'Agadir\par}
+    \vspace{0.5cm}
+    {\scshape\Large \maFiliere\par}
+    
+    \vspace{1.5cm}
+    
+    {\huge\bfseries \monTitre\par}
+    \vspace{0.5cm}
+    {\Large\bfseries \monSousTitre\par}
+    
+    \vspace{2cm}
+    
+    \large
+    \textit{R\'ealis\'e par :} \\
+    \vspace{0.5cm}
+    \textbf{\monEtudiantUn} \\
+    
+    \vspace{1cm}
+    
+    \textit{Encadr\'e par :} \\
+    \vspace{0.5cm}
+    \textbf{\monProfesseur}
+
+    \vfill
+    
+    {\large Ann\'ee Universitaire : \monAnnee\par}
+    \vspace{0.5cm}
+    {\large Date : \today\par}
+    
+\end{titlepage}
+
+% ========================================
+% TABLE DES MATI\`ERES
+% ========================================
+\tableofcontents
+\newpage
+
+% ========================================
+% INTRODUCTION
+% ========================================
+\section{Introduction}
+Ce document constitue le compte rendu du TP 2, ax\'e sur le D\'eveloppement Pilot\'e par les Tests (TDD). L'objectif principal \'etait d'impl\'ementer une classe \texttt{AdvancedCalculator} en Java, en adh\'erant strictement au cycle TDD : Red (\'ecrire un test qui \'echoue), Green (\'ecrire le code minimal pour faire passer le test), et Refactor (am\'eliorer le code sans alt\'erer son comportement). Ce rapport pr\'esente les livrables finaux : le code source, les tests unitaires, le rapport de couverture de code, ainsi qu'une br\`eve analyse des d\'efis rencontr\'es.
+
+% ========================================
+% LIVRABLES DU PROJET
+% ========================================
+\section{Livrables}
+
+Le code complet du projet est disponible sur le d\'ep\^ot GitHub suivant : \\
+\href{https://github.com/abderrahmanBouanani/TDD-Advanced-Calculator}{TDD-Advanced-Calculator}
+
+\subsection{Code Source (Extraits)}
+
+\subsubsection{MathLogger.java}
+\begin{lstlisting}[caption={MathLogger.java}]
+public class MathLogger {
+    public void log(String operation, double result) {
+        System.out.println("LOG: " + operation + " = " + result);
+    }
+}
+\end{lstlisting}
+
+\subsubsection{AdvancedCalculator.java}
+\begin{lstlisting}[caption={AdvancedCalculator.java}]
+public class AdvancedCalculator {
+    // D\'ependances inject\'ees (logger, validator)
+    public AdvancedCalculator(MathLogger logger, SecurityValidator validator) { ... }
+
+    // M\'ethodes de calcul simples (add, subtract, etc.) omises pour bri\`evet\'e...
+
+    public double divide(double a, double b) {
+        if (!validator.isOperationAllowed("divide", a, b)) {
+            throw new ArithmeticException("Division operations are not allowed...");
+        }
+        if (b == 0) throw new ArithmeticException("Cannot divide by zero");
+        
+        double result = a / b;
+        logger.log("divide", result);
+        return result;
+    }
+}
+\end{lstlisting}
+
+\subsection{Classes de Test (Extraits)}
+\begin{lstlisting}[caption={AdvancedCalculatorTest.java}]
+@ExtendWith(MockitoExtension.class)
+class AdvancedCalculatorTest {
+
+    @Mock private MathLogger mathLogger;
+    @Mock private SecurityValidator securityValidator;
+    @InjectMocks private AdvancedCalculator calculator;
+
+    @Test
+    void shouldDivideTwoNumbers() {
+        // AAA Pattern
+        // Given
+        when(securityValidator.isOperationAllowed(anyString(), anyDouble(), anyDouble())).thenReturn(true);
+        // When
+        double result = calculator.divide(10, 2);
+        // Then
+        assertThat(result).isEqualTo(5.0);
+        
+        // V\'erification des appels et capture d'arguments
+        verify(securityValidator).isOperationAllowed("divide", 10.0, 2.0);
+        verify(mathLogger).log(eq("divide"), eq(5.0));
+    }
+    
+    // Autres tests (add, subtract, exceptions...) omis
+}
+\end{lstlisting}
+
+\subsection{Rapport de Couverture JaCoCo}
+Le rapport de couverture a \'et\'e g\'en\'er\'e via Maven. Des tests unitaires suppl\'ementaires ont \'et\'e ajout\'es pour \texttt{MathLogger} et \texttt{SecurityValidator} pour atteindre les objectifs.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{figures/jacoco_report.png}
+    \caption{Rapport de couverture de code : Line Coverage > 90\%, Branch Coverage > 85\%.}
+    \label{fig:jacoco}
+\end{figure}
+
+\subsection{Analyse}
+L'int\'egration de **Mockito** a grandement facilit\'e l'isolation des tests de \texttt{AdvancedCalculator}. Au lieu de d\'ependre de la logique r\'eelle de validation, nous avons pu simuler des comportements (autoris\'e/non autoris\'e) pour v\'erifier comment la calculatrice r\'eagissait. L'utilisation de \texttt{ArgumentCaptor} a permis de valider pr\'ecis\'ement les interactions avec le \texttt{MathLogger} sans effet de bord. Les cas limites comme la division par z\'ero ont \'et\'e g\'er\'es proprement via \texttt{assertThatExceptionOfType}. Enfin, l'obligation de couverture de code nous a pouss\'es \`a ne n\'egliger aucune classe, m\^eme utilitaire.
+
+% ========================================
+% CONCLUSION
+% ========================================
+\section{Conclusion}
+Ce projet a permis de ma\^itriser le cycle complet TDD avec des outils modernes. L'ajout de Mockito a montr\'e comment tester des composants interconnect\'es de mani\`ere isol\'ee, tandis que JaCoCo a servi de guide pour s'assurer que chaque branche logique \'etait v\'erifi\'ee. Le code final est modulaire, robuste et enti\`erement couvert par des tests lisibles.
+
+\end{document}
